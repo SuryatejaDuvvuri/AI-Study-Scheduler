@@ -9,7 +9,7 @@ export default function SignUpPage() {
       <AppBar position="static" sx={{ backgroundColor: "#2c3e50" }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="h6" sx={{ color: '#fff' }}>
-            Flashcard SaaS
+           AI Study Scheduler
           </Typography>
           <Box>
             <Button color="inherit" component={Link} href="/sign-in" sx={{ mx: 1 }}>

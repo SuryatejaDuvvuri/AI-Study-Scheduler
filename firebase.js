@@ -22,13 +22,13 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
-let analytics;
-if (typeof window !== "undefined") {
-  isSupported().then((supported) => {
-    if (supported) {
-      analytics = getAnalytics(app);
-    }
-  });
-}
+// let analytics;
+// if (typeof window !== "undefined") {
+//   isSupported().then((supported) => {
+//     if (supported) {
+//       analytics = getAnalytics(app);
+//     }
+//   });
+// }
 
-export { app, db, analytics };
+export { app, db};

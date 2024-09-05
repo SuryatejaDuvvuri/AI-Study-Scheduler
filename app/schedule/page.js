@@ -16,16 +16,16 @@ import {
 
 import { useSearchParams } from "next/navigation";
 
-export default function Flashcard() {
+export default function schedule() {
   const { isLoaded, isSignedIn, user } = useUser();
-  const [flashcards, setFlashCards] = useState([]);
+  const [schedules, setschedules] = useState([]);
   const [flipped, setFlipped] = useState({});
 
   const searchParams = useSearchParams();
   const search = searchParams.get("id");
 
   useEffect(() => {
-    const getFlashcard = async () => {
+    const getschedule = async () => {
       if (!search || !user) return;
       const colRef = collection(doc(collection(db, "users"), user.id), search);
       const docs = await getDocs(colRef);
@@ -35,17 +35,10 @@ export default function Flashcard() {
       docs.forEach((doc) => {
         cards.push({ id: doc.id, ...doc.data() });
       });
-      setFlashCards(cards);
+      setschedules(cards);
     };
-    getFlashcard();
+    getschedule();
   }, [user, search]);
-
-  const handleCardClick = (id) => {
-    setFlipped((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
 
   if (!isLoaded || !isSignedIn) {
     return <></>;
@@ -54,13 +47,13 @@ export default function Flashcard() {
   return (
     <Container maxWidth="100vw">
       <Grid container maxWidth={"100%"} spacing={3} sx={{ mt: 4 }}>
-        {flashcards.length > 0 && (
+        {schedules.length > 0 && (
           <Box width={"100%"} sx={{ mt: 4 }}>
             <Typography variant="h5" sx={{ mb: 2 }} textAlign={"center"}>
-              Flashcards Preview
+              Schedule Preview
             </Typography>
             <Grid container spacing={3}>
-              {flashcards.map((flashcard, index) => (
+              {schedules.map((schedule, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
                   <Card
                     sx={{
@@ -70,14 +63,11 @@ export default function Flashcard() {
                       },
                     }}
                   >
-                    <CardActionArea onClick={() => handleCardClick(index)}>
+                    <CardActionArea>
                       <Box
                         sx={{
                           transformStyle: "preserve-3d",
                           transition: "transform 0.6s",
-                          transform: flipped[index]
-                            ? "rotateY(180deg)"
-                            : "rotateY(0deg)",
                           position: "relative",
                           height: "200px",
                           backgroundColor: "#f9f9f9",
@@ -106,7 +96,17 @@ export default function Flashcard() {
                               color: "#333",
                             }}
                           >
-                            {flashcard.front}
+                            {schedule.hour}
+                          </Typography>
+                          <Typography
+                            variant="h6"
+                            sx={{
+                              fontSize: "1.25rem",
+                              fontWeight: "bold",
+                              color: "#333",
+                            }}
+                          >
+                            {schedule.description}
                           </Typography>
                         </Box>
                         <Box
@@ -133,7 +133,7 @@ export default function Flashcard() {
                               color: "#333",
                             }}
                           >
-                            {flashcard.back}
+                            {schedule.description}
                           </Typography>
                         </Box>
                       </Box>
